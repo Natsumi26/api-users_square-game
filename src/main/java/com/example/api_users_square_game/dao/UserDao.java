@@ -16,4 +16,6 @@ public interface UserDao {
     void deleteUser(UUID id);
 
     boolean existsById(UUID id);
+
+    User findByUsername(String username);
 }

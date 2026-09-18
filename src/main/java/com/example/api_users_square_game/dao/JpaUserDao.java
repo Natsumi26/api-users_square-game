@@ -52,5 +52,16 @@ public class JpaUserDao implements UserDao {
         return userEntityRepository.existsById(id);
     }
 
+    @Override
+    public User findByUsername(String username) {
+        UserEntity userEntity = userEntityRepository.findByUsername(username);
+
+        if(userEntity == null){
+            return null;
+        }
+
+        return userEntity.toUser();
+    }
+
 
 }

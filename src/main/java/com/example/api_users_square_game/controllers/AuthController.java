@@ -1,0 +1,55 @@
+package com.example.api_users_square_game.controllers;
+
+import com.example.api_users_square_game.dao.UserDao;
+import com.example.api_users_square_game.dto.LoginRequest;
+import com.example.api_users_square_game.models.User;
+import com.example.api_users_square_game.services.JwtService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final UserDao userDao;
+
+    public AuthController(AuthenticationManager authenticationManager, JwtService jwtService, UserDao userDao) {
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+        this.userDao = userDao;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) throws Exception {
+
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getUsername(),
+                            request.getPassword()
+                    )
+            );
+
+            User user = userDao.findByUsername(request.getUsername());
+
+            String token = jwtService.generateToken(
+                    user.getUsername(),
+                    user.getPassword()
+            );
+
+            return ResponseEntity.ok(token);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Identifiants invalides");
+        }
+    }
+}

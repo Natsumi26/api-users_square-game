@@ -3,6 +3,7 @@ package com.example.api_users_square_game.services;
 import com.example.api_users_square_game.dao.UserDao;
 
 import com.example.api_users_square_game.models.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -13,8 +14,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
 
-    public UserServiceImpl(UserDao userDao) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -30,6 +34,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        user.setPassword(
+                passwordEncoder.encode(user.getPassword())
+        );
         return userDao.createUser(user);
     }
 

@@ -35,3 +35,4 @@ build/
 
 ### Configuration secret ###
 application-mysql.properties
+application-local.properties

@@ -14,6 +14,7 @@ public class UserEntity {
     private String username;
     private String password;
     private String email;
+    private String roles;
 
 
     public String getUsername() {
@@ -48,12 +49,20 @@ public class UserEntity {
         return id;
     }
 
+    public String getRoles() {
+        return roles;
+    }
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
     public User toUser() {
         User user = new User();
         user.setId(this.getId());
         user.setUsername(this.getUsername());
         user.setPassword(this.getPassword());
         user.setEmail(this.getEmail());
+        user.setRoles(this.getRoles());
 
         return user;
     }
@@ -65,6 +74,7 @@ public class UserEntity {
         userEntity.username = user.getUsername();
         userEntity.password = user.getPassword();
         userEntity.email = user.getEmail();
+        userEntity.roles = user.getRoles();
 
         return userEntity;
     }

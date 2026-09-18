@@ -41,6 +41,7 @@ public class UserController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Utilisateur créée"),
+            @ApiResponse(responseCode = "401", description = "Requête non authorisée"),
     })
     @PostMapping
     public void createUser(@RequestBody User user) {
@@ -75,7 +76,7 @@ public class UserController {
     }
 
     @Operation(
-            summary = "Validitéde l'utilisateur",
+            summary = "Validité de l'utilisateur",
             description = "Retourne si l'utilisateur est valide."
     )
     @ApiResponses({
