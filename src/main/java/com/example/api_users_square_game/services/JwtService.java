@@ -22,10 +22,10 @@ public class JwtService {
         );
     }
 
-    public String generateToken(String username, String roles) {
+    public String generateToken(String username, String role) {
         return Jwts.builder()
                 .subject(username)
-                .claim("roles", roles)
+                .claim("role", role)
                 .issuedAt(new Date())
                 .expiration(new Date((new Date()).getTime() + 84600000))
                 .signWith(getSigningKey())
@@ -40,6 +40,15 @@ public class JwtService {
                 .getPayload();
 
         return claims.getSubject();
+    }
+
+    public String extractRole(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        return claims.get("role").toString();
     }
 
     public boolean isTokenValid(String token) {

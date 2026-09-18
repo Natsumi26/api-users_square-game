@@ -3,6 +3,7 @@ package com.example.api_users_square_game.services;
 import com.example.api_users_square_game.dao.UserDao;
 import com.example.api_users_square_game.models.User;
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,17 +20,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
         User user = userDao.findByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("Utilisateur introuvable : "+username);
         }
 
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
-                .password(user.getPassword())
-                .roles(user.getRoles())
-                .build();
+        return new CustomUserDetails(
+                user.getId(),
+                user.getUsername(),
+                user.getPassword(),
+                org.springframework.security.core.authority.AuthorityUtils
+                        .createAuthorityList(user.getRole())
+        );
     }
 }

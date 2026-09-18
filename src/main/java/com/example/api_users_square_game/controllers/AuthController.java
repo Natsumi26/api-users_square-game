@@ -42,11 +42,12 @@ public class AuthController {
 
             String token = jwtService.generateToken(
                     user.getUsername(),
-                    user.getPassword()
+                    user.getRole()
             );
 
             return ResponseEntity.ok(token);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body("Identifiants invalides");

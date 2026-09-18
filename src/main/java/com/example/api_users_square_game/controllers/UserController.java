@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -30,6 +31,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Liste des utilisateurs récupérée"),
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public Collection<User> getUsers() {
         return userService.getUsers();
@@ -56,6 +58,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Utilisateur trouvée"),
             @ApiResponse(responseCode = "404", description = "Utilisateur inconnue")
     })
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #id == authentication.principal.id)")
     @GetMapping("/{id}")
     public User getUserById(@PathVariable UUID id) {
         return userService.getUserById(id);
@@ -70,6 +73,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Utilisateur supprimée"),
             @ApiResponse(responseCode = "404", description = "Utilisateur inconnue")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable UUID id) {
         userService.deleteUser(id);
