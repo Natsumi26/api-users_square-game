@@ -1,4 +1,4 @@
-package com.example.api_users_square_game.models;
+package com.example.api_users_square_game.entities;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

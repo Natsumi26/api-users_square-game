@@ -1,5 +1,6 @@
-package com.example.api_users_square_game.models;
+package com.example.api_users_square_game.entities;
 
+import com.example.api_users_square_game.models.User;
 import jakarta.persistence.*;
 
 

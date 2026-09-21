@@ -1,8 +1,8 @@
 package com.example.api_users_square_game.dao;
 
 import com.example.api_users_square_game.models.User;
-import com.example.api_users_square_game.models.UserEntity;
-import com.example.api_users_square_game.models.UserEntityRepository;
+import com.example.api_users_square_game.entities.UserEntity;
+import com.example.api_users_square_game.entities.UserEntityRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
