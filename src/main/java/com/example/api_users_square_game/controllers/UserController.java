@@ -31,7 +31,6 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Liste des utilisateurs récupérée"),
     })
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public Collection<User> getUsers() {
         return userService.getUsers();
