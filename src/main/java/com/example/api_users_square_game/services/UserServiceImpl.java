@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(
                 passwordEncoder.encode(user.getPassword())
         );
+        user.setRole("ROLE_USER");
         return userDao.createUser(user);
     }
 

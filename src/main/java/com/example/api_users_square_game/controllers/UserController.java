@@ -45,8 +45,8 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Requête non authorisée"),
     })
     @PostMapping
-    public void createUser(@RequestBody User user) {
-        userService.createUser(user);
+    public User createUser(@RequestBody User user) {
+        return userService.createUser(user);
     }
 
     @Operation(
