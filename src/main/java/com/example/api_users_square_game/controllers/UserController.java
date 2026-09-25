@@ -1,5 +1,6 @@
 package com.example.api_users_square_game.controllers;
 
+import com.example.api_users_square_game.dto.UserResponseDto;
 import com.example.api_users_square_game.models.User;
 import com.example.api_users_square_game.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,8 +33,12 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Liste des utilisateurs récupérée"),
     })
     @GetMapping
-    public Collection<User> getUsers() {
-        return userService.getUsers();
+    public Collection<UserResponseDto> getUsers() {
+
+        return userService.getUsers()
+                .stream()
+                .map(UserResponseDto::fromUser)
+                .toList();
     }
 
     @Operation(
@@ -45,8 +50,9 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Requête non authorisée"),
     })
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public UserResponseDto createUser(@RequestBody User user) {
+        User createUser = userService.createUser(user);
+        return UserResponseDto.fromUser(createUser);
     }
 
     @Operation(
@@ -59,8 +65,9 @@ public class UserController {
     })
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #id == authentication.principal.id)")
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable UUID id) {
-        return userService.getUserById(id);
+    public UserResponseDto getUserById(@PathVariable UUID id) {
+        User user = userService.getUserById(id);
+        return UserResponseDto.fromUser(user);
     }
 
 
